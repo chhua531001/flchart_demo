@@ -1,3 +1,4 @@
+import 'package:flchart_demo/pie_chart_page.dart';
 import 'package:flchart_demo/pie_chart_sample1.dart';
 import 'package:flchart_demo/pie_chart_sample2.dart';
 import 'package:flchart_demo/pie_chart_sample3.dart';
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const PieChartSample3(),
+      home: const PieChartPage(),
     );
   }
 }

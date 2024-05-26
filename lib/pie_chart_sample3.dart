@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flchart_demo/pie_chart_item_data.dart';
 import 'package:flchart_demo/presentation/resources/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -13,9 +14,42 @@ class PieChartSample3 extends StatefulWidget {
 class PieChartSample3State extends State {
   int touchedIndex = 0;
 
+  List<PieChartItemData> myData = [
+    PieChartItemData(
+      color: AppColors.contentColorBlue,
+      title: "40%",
+      value: 40,
+      iconPath: 'assets/icons/ophthalmology-svgrepo-com.svg',
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorYellow,
+      title: "30%",
+      value: 30,
+      iconPath: 'assets/icons/librarian-svgrepo-com.svg',
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorPink,
+      title: "15%",
+      value: 15,
+      iconPath: 'assets/icons/fitness-svgrepo-com.svg',
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorGreen,
+      title: "15%",
+      value: 15,
+      iconPath: 'assets/icons/worker-svgrepo-com.svg',
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        title: const Text("Sample 3"),
+      ),
       body: Center(
         child: PieChart(
           PieChartData(
@@ -38,102 +72,36 @@ class PieChartSample3State extends State {
             ),
             sectionsSpace: 0,
             centerSpaceRadius: 0,
-            sections: showingSections(),
+            sections: myData.map((item) {
+              int index = myData.indexOf(item);
+              final isTouched = index == touchedIndex;
+              final fontSize = isTouched ? 20.0 : 16.0;
+              final radius = isTouched ? 110.0 : 100.0;
+              final widgetSize = isTouched ? 55.0 : 40.0;
+              const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+              return PieChartSectionData(
+                color: item.color,
+                value: item.value,
+                title: item.title,
+                radius: radius,
+                titleStyle: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  shadows: shadows,
+                ),
+                badgeWidget: _Badge(
+                  item.iconPath!,
+                  size: widgetSize,
+                  borderColor: AppColors.contentColorBlack,
+                ),
+                badgePositionPercentageOffset: .98,
+              );
+            }).toList(),
           ),
         ),
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 20.0 : 16.0;
-      final radius = isTouched ? 110.0 : 100.0;
-      final widgetSize = isTouched ? 55.0 : 40.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.contentColorBlue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/ophthalmology-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.contentColorYellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/librarian-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.contentColorPurple,
-            value: 16,
-            title: '16%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/fitness-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppColors.contentColorGreen,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xffffffff),
-              shadows: shadows,
-            ),
-            badgeWidget: _Badge(
-              'assets/icons/worker-svgrepo-com.svg',
-              size: widgetSize,
-              borderColor: AppColors.contentColorBlack,
-            ),
-            badgePositionPercentageOffset: .98,
-          );
-        default:
-          throw Exception('Oh no');
-      }
-    });
   }
 }
 
