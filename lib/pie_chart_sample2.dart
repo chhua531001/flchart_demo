@@ -1,4 +1,5 @@
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flchart_demo/pie_chart_item_data.dart';
 import 'package:flchart_demo/presentation/resources/app_colors.dart';
 import 'package:flchart_demo/presentation/widgets/indicator.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +14,42 @@ class PieChartSample2 extends StatefulWidget {
 class PieChart2State extends State {
   int touchedIndex = -1;
 
+  List<PieChartItemData> myData = [
+    PieChartItemData(
+      color: AppColors.contentColorBlue,
+      title: "40%",
+      value: 40,
+      indicatorTitle: "First",
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorYellow,
+      title: "30%",
+      value: 30,
+      indicatorTitle: "Second",
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorPink,
+      title: "15%",
+      value: 15,
+      indicatorTitle: "Third",
+    ),
+    PieChartItemData(
+      color: AppColors.contentColorGreen,
+      title: "15%",
+      value: 15,
+      indicatorTitle: "Fourth",
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.black,
+        elevation: 0,
+        title: const Text("Sample 2"),
+      ),
       body: Center(
         child: AspectRatio(
           aspectRatio: 1.3,
@@ -48,48 +82,44 @@ class PieChart2State extends State {
                       ),
                       sectionsSpace: 0,
                       centerSpaceRadius: 40,
-                      sections: showingSections(),
+                      sections: myData.map((item) {
+                        int index = myData.indexOf(item);
+                        final isTouched = index == touchedIndex;
+                        final fontSize = isTouched ? 25.0 : 16.0;
+                        final radius = isTouched ? 60.0 : 50.0;
+                        const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
+                        return PieChartSectionData(
+                          color: item.color,
+                          value: item.value,
+                          title: item.title,
+                          radius: radius,
+                          titleStyle: TextStyle(
+                            fontSize: fontSize,
+                            fontWeight: FontWeight.bold,
+                            color: AppColors.mainTextColor1,
+                            shadows: shadows,
+                          ),
+                        );
+                      }).toList(),
                     ),
                   ),
                 ),
               ),
-              const Column(
+              Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Indicator(
-                    color: AppColors.contentColorBlue,
-                    text: 'First',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: AppColors.contentColorYellow,
-                    text: 'Second',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: AppColors.contentColorPurple,
-                    text: 'Third',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 4,
-                  ),
-                  Indicator(
-                    color: AppColors.contentColorGreen,
-                    text: 'Fourth',
-                    isSquare: true,
-                  ),
-                  SizedBox(
-                    height: 18,
-                  ),
-                ],
+                children: myData.map((item) => Column(
+                    children: [
+                      Indicator(
+                        color: item.color,
+                        text: item.indicatorTitle!,
+                        isSquare: true,
+                      ),
+                      const SizedBox(
+                        height: 4,
+                      ),
+                    ],
+                  )).toList(),
               ),
               const SizedBox(
                 width: 28,
@@ -99,70 +129,5 @@ class PieChart2State extends State {
         ),
       ),
     );
-  }
-
-  List<PieChartSectionData> showingSections() {
-    return List.generate(4, (i) {
-      final isTouched = i == touchedIndex;
-      final fontSize = isTouched ? 25.0 : 16.0;
-      final radius = isTouched ? 60.0 : 50.0;
-      const shadows = [Shadow(color: Colors.black, blurRadius: 2)];
-      switch (i) {
-        case 0:
-          return PieChartSectionData(
-            color: AppColors.contentColorBlue,
-            value: 40,
-            title: '40%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 1:
-          return PieChartSectionData(
-            color: AppColors.contentColorYellow,
-            value: 30,
-            title: '30%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 2:
-          return PieChartSectionData(
-            color: AppColors.contentColorPurple,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        case 3:
-          return PieChartSectionData(
-            color: AppColors.contentColorGreen,
-            value: 15,
-            title: '15%',
-            radius: radius,
-            titleStyle: TextStyle(
-              fontSize: fontSize,
-              fontWeight: FontWeight.bold,
-              color: AppColors.mainTextColor1,
-              shadows: shadows,
-            ),
-          );
-        default:
-          throw Error();
-      }
-    });
   }
 }
