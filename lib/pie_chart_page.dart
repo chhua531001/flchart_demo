@@ -28,6 +28,7 @@ class PieChartPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.green,
+                shape: const StadiumBorder(),
               ),
               child: const Text(
                 "Sample 1",
@@ -44,6 +45,7 @@ class PieChartPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.purple,
+                shape: const StadiumBorder(),
               ),
               child: const Text(
                 "Sample 2",
@@ -60,6 +62,7 @@ class PieChartPage extends StatelessWidget {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blue,
+                shape: const StadiumBorder(),
               ),
               child: const Text(
                 "Sample 3",
